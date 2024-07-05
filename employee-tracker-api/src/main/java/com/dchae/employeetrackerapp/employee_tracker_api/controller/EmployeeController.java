@@ -28,7 +28,7 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
-    @DeleteMapping("/employee/{id}")
+    @DeleteMapping("/employee/{id}") // Since id is the variable here it needs to be wrapped in curly braces
     public ResponseEntity<?> deleteEmployee(@PathVariable Long id) {
         try {
             employeeService.deleteEmployee(id);
@@ -36,5 +36,12 @@ public class EmployeeController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<?> getEmployeeById(@PathVariable Long id) {
+        Employee employee = employeeService.getEmployeeById(id);
+        if(employee == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(employee);
     }
 }

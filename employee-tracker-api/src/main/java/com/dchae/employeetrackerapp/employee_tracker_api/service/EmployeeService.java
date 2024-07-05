@@ -29,4 +29,10 @@ public class EmployeeService {
 
         employeeRepository.deleteById(id);
     }
+
+    public Employee getEmployeeById(Long id) {
+
+        // Since this method is returning an optional employee it can be null
+        return employeeRepository.findById(id).orElse(null);
+    }
 }
