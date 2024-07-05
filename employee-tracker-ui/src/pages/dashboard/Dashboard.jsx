@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-
+  
   // Create use state to store the employees:
   const [employees, setEmployees] = useState([]);
+
+  // Use navigate hook in order to redirect the user to the new page when they click update:
+  const navigate = useNavigate();
 
   // We need to use use effect to call the api:
   useEffect(() => {
@@ -44,6 +48,11 @@ const Dashboard = () => {
     }
   }
 
+  // This is the method that uses navigate hook:
+  const handleUpdate = (employeeId) => {
+    navigate(`/employee/${employeeId}`);
+  }
+
   return (
     <>
     <Container className='mt-5'>
@@ -68,7 +77,7 @@ const Dashboard = () => {
                   <td>{employee.phone}</td>
                   <td>{employee.department}</td>
                   <td>
-                    <Button variant='outline-secondary'>Update</Button>{" "}
+                    <Button variant='outline-secondary' onClick={()=> handleUpdate(employee.id)}>Update</Button>{" "}
                     <Button variant='outline-danger' onClick={()=> handleDelete(employee.id)}>Delete</Button>
                   </td>
                 </tr>
