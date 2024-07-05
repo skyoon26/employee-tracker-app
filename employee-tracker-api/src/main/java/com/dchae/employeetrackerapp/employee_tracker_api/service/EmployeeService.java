@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service // Tells Spring to manage this class, contains business logic, allows for dependency injection
 @RequiredArgsConstructor // Need this to inject the employee repository
@@ -34,5 +35,20 @@ public class EmployeeService {
 
         // Since this method is returning an optional employee it can be null
         return employeeRepository.findById(id).orElse(null);
+    }
+
+    public Employee updateEmployee(Long id, Employee employee) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (optionalEmployee.isPresent()) {
+            Employee existingEmployee = optionalEmployee.get();
+
+            existingEmployee.setEmail(employee.getEmail());
+            existingEmployee.setName(employee.getName());
+            existingEmployee.setPhone(employee.getPhone());
+            existingEmployee.setDepartment(employee.getDepartment());
+
+            return employeeRepository.save(existingEmployee);
+        }
+        return null;
     }
 }
