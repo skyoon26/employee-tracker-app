@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Row, Col, Table, Button } from 'react-bootstrap';
+import { Container, Row, Col, Table, Button, Form, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+
+  // Create use state to store search data:
+  const [search, setSearch] = useState('');
   
   // Create use state to store the employees:
   const [employees, setEmployees] = useState([]);
@@ -59,6 +62,13 @@ const Dashboard = () => {
       <Row>
         <Col>
           <h1 className='text-center'>Employees</h1>
+          <Form>
+            <InputGroup className='my-3'>
+              <Form.Control 
+              onChange={(e) => setSearch(e.target.value)} 
+              placeholder='Search employees' />
+            </InputGroup>
+          </Form>
           <Table striped bordered hover responsive>
             <thead>
               <tr>
@@ -70,7 +80,11 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {employees.map((employee) => (
+              {employees.filter((employee) => {
+                return search.toLowerCase() === '' 
+                  ? employee 
+                  : employee.name.toLowerCase().includes(search);
+              }).map((employee) => (
                 <tr key={employee.id}>
                   <td>{employee.name}</td>
                   <td>{employee.email}</td>
